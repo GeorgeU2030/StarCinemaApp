@@ -6,7 +6,7 @@ import { titleFonts } from "@/config/fonts";
 
 export const NavBar = () => {
   return (
-    <nav className="flex px-5 justify-between items-center w-full">
+    <nav className="flex px-5 py-1 justify-between items-center w-full shadow-sm">
       <div>
         {/* Logo */}
         <Link href="/">
@@ -16,8 +16,17 @@ export const NavBar = () => {
         </Link>
       </div>
 
-      {/* Center Menu */}
-      <div className="hidden sm:block"></div>
+      {/* Search bar */}
+      <div className="hidden sm:block">
+        <div className="flex items-center bg-gray-100 rounded-full p-2">
+          <input
+            type="text"
+            placeholder="Search"
+            className="bg-transparent outline-none w-80 pl-2"
+          />
+          <IoSearchOutline className="text-xl pr-1" />
+        </div>
+      </div>
 
       {/* Login */}
       <div className="flex items-center">
