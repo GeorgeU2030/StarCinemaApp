@@ -8,14 +8,14 @@ export function PageNotFound() {
     <div className="flex flex-col-reverse md:flex-row min-h-screen w-full justify-center items-center align-middle">
       <div className="text-center px-5 mx-5">
         <h2 className={`${titleFonts.className} antialiased text-9xl`}>404</h2>
-        <p className="font-semibold text-xl">Uups! Pagina no encontrada.</p>
+        <p className="font-semibold text-xl">Oops! Page not found</p>
         <p className="font-light">
-          <span>Volver a </span>
+          <span>Go back to </span>
           <Link
             className="font-normal hover:underline transition-all text-blue-500"
             href="/"
           >
-            la página principal
+            Home
           </Link>
         </p>
       </div>

@@ -4,8 +4,8 @@ import ReduxProvider from "./provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Eventos",
-  description: "Gestión de eventos",
+  title: "StarCinema",
+  description: "StarCinema - The best movies in the world",
 };
 
 export default function RootLayout({
