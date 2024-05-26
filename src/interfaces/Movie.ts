@@ -7,4 +7,5 @@ export interface Movie {
   runtime: number;
   rating: number;
   poster: string;
+  slug: string;
 }

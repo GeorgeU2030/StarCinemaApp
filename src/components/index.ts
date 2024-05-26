@@ -1,5 +1,5 @@
-export * from "./movies/movies-list/MovieItem";
-export * from "./movies/movies-list/MoviesList";
+export * from "./movies/movies-grid/MovieGridItem";
+export * from "./movies/movies-grid/MovieGrid";
 
 export * from "./ui/footer/Footer";
 export * from "./ui/navbar/Navbar";
