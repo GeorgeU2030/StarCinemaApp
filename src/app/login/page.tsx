@@ -5,6 +5,7 @@ import React from 'react'
 import SignIn from '@/components/authjs/SignIn'
 
 export default function Login() {
+
   return (
     <div className='min-h-screen bg-gradient-to-tr from-one to-red-800 flex'>
         <div className='flex justify-center items-center flex-grow '>
