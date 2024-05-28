@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { registerFormSchema } from '@/schemas/formschema'
+import { registerFormSchema } from '@/schemas/registerformschema'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 
