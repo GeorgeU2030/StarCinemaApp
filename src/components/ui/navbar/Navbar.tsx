@@ -1,19 +1,19 @@
 "use client";
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
-
 import { titleFonts } from "@/config/fonts";
+import { Image, Button } from "@nextui-org/react";
 
 export const NavBar = () => {
   return (
-    <nav className="flex px-5 py-1 justify-between items-center w-full shadow-sm">
-      <div>
+    <nav className="flex px-5 py-3 justify-between items-center w-full shadow-sm bg-one">
+      <div className="flex items-center">
         {/* Logo */}
-        <Link href="/">
-          <span className={`${titleFonts.className} antialiased font-bold`}>
+          <Image src='imgs/star.png' width={32} height={32}/>
+          <span className={`${titleFonts.className} antialiased font-bold ml-2 text-four`}>
             StarCinema
           </span>
-        </Link>
+        
       </div>
 
       {/* Search bar */}
@@ -30,12 +30,14 @@ export const NavBar = () => {
 
       {/* Login */}
       <div className="flex items-center">
-        <Link
-          href="/login"
-          className="m-2 p-2 rounded-md transition-all hover:bg-blue-400 hover:text-white"
-        >
-          <span className="cursor-pointer"> Login</span>
-        </Link>
+        <Button className="md:mr-3 mr-1 bg-one text-four border-five border-2 font-semibold">
+          <Link href="/register">Register</Link>
+        </Button>
+        <Button className="md:mr-3 mr-0 bg-one text-four border-five border-2 font-semibold">
+          <Link href="/login">
+            <span className={`${titleFonts.className}`}>Login</span>  
+          </Link>
+        </Button>
       </div>
     </nav>
   );
