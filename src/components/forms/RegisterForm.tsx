@@ -15,6 +15,9 @@ import {
 import { registerFormSchema } from '@/schemas/registerformschema'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { useRegisterCustomerMutation } from '@/store/services/userApi'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function RegisterForm() {
 
@@ -29,8 +32,26 @@ export default function RegisterForm() {
         },
     }) 
 
+    const router = useRouter()
+
+    const [registerUser, { data, error }] = useRegisterCustomerMutation()
+
+    const [succesfully, setSuccesfully] = useState('')
+    const [errorMap, setErrorMap] = useState('')
+
     async function onSubmit(data: z.infer<typeof registerFormSchema>) {
-        console.log(data)
+        let errorocurred = false
+        await registerUser(data).unwrap().catch((error) => {
+            setErrorMap('The User exists')
+            errorocurred = true
+        });
+        
+        if (!errorocurred && data) {
+            setErrorMap('')
+            setSuccesfully('User registered succesfully')
+            router.push('/login')
+        }
+
     }
 
     return (
@@ -101,10 +122,13 @@ export default function RegisterForm() {
                     </FormItem>
                 )}
             />
+            {succesfully != '' && <div className='text-green-800 text-center font-bold mb-2 text-sm'>{succesfully}</div>}
+            {errorMap != '' && <div className='text-red-800 text-center font-bold mb-2 text-sm'>{errorMap}</div>}
             <div className="flex justify-center">
                 <Button type="submit" className={'bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}>Register</Button>
             </div>
             </form>
+            
         </Form>
     )
 }

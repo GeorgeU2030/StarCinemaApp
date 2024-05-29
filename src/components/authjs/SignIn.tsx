@@ -4,10 +4,8 @@ import { useSession, signIn, getCsrfToken } from "next-auth/react"
 import { Button, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useFindByEmailQuery, 
-useRegisterCustomerMutation,
-useLoginUserMutation
+useRegisterCustomerMutation
 } from "@/store/services/userApi";
-import Cookies from "js-cookie";
 import { useEffect, useState, useRef } from "react";
 import { generatePassword } from "@/functions/generatePassword";
 
