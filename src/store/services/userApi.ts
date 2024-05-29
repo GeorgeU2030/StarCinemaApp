@@ -11,7 +11,20 @@ export const userApi = createApi({
             body: credentials,
           }),
         }),
+        registerCustomer: builder.mutation({
+          query: (credentials) => ({
+            url: 'auth/register_customer',
+            method: 'POST',
+            body: credentials,
+          }),
+        }),
+        findByEmail: builder.query({
+          query: (email) => ({
+            url: `users/exist_email?email=${email}`,
+            method: 'GET',
+          }),
+        })
     }),
 });
 
-export const {useLoginUserMutation} = userApi;
+export const {useLoginUserMutation, useRegisterCustomerMutation, useFindByEmailQuery} = userApi;

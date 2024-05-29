@@ -17,9 +17,11 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useLoginUserMutation } from '@/store/services/userApi'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
 
+    // Form Hook
     const form = useForm<z.infer<typeof loginFormSchema>>({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
@@ -28,20 +30,28 @@ export default function LoginForm() {
         },
     }) 
 
+    // Redux LoginUser Mutation
     const [loginUser, { data, error }] = useLoginUserMutation()
+
+    // Variables
     const [errorState, setErrorState] = React.useState('')
+    const router = useRouter()
 
 
+    // OnSubmit Function - Login User
     async function onSubmit(formdata: z.infer<typeof loginFormSchema>) {
-        await loginUser(formdata)
-
-        console.log(error)
-        if (error && 'status' in error && error.status === 401) {
-            setErrorState('Invalid Credentials')
-            return;
-        }
-        else {
-            Cookies.set('token', data?.access_token)
+        await loginUser(formdata).unwrap().catch((error) => {
+            if (error.status === 401) {
+                setErrorState('Invalid Credentials');
+            } else {
+                setErrorState('The user do not Exist');
+            }
+        });
+    
+        setErrorState('');
+        if (data) {
+            Cookies.set('token', data.access_token);
+            router.push('/')
         }
     }
 
@@ -58,7 +68,7 @@ export default function LoginForm() {
                         <FormControl>
                             <Input {...field} className='border-2 border-two text-end' />
                         </FormControl>
-                        <FormMessage className='font-semibold'/>
+                        <FormMessage className='font-semibold text-center'/>
                     </FormItem>
                 )}
             />
@@ -71,7 +81,7 @@ export default function LoginForm() {
                         <FormControl>
                             <Input {...field} className='border-2 border-two text-end' type='password'/>
                         </FormControl>
-                        <FormMessage className='font-semibold'/>
+                        <FormMessage className='font-semibold text-center'/>
                     </FormItem>
                 )}
             />
@@ -80,7 +90,7 @@ export default function LoginForm() {
                 <Button type="submit" className={'w-full bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}>Login</Button>
             </div>
             </form>
-            {errorState != '' && <div className='text-red-500'>{errorState}</div>}
+            {errorState != '' && <div className='text-red-500 text-center font-bold mb-2'>{errorState}</div>}
         </Form>
     )
 }
