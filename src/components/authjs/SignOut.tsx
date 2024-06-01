@@ -5,28 +5,55 @@ import { useDispatch } from 'react-redux'
 import { clearUser } from '@/store/slices/userSlice'
 import { persistor } from '@/store'
 import Cookies from 'js-cookie'
+import PageLoading from '../ui/not-found/PageLoading'
 
 export default function SignOut() {
 
     const session = useSession()
     const dispatch = useDispatch()
+    const [loading, setLoading] = React.useState(false)
 
     const handleSignOut = async () => {
 
-        dispatch(clearUser())
+    setLoading(true); 
 
-        await persistor.purge()
+    try {
+      
+      dispatch(clearUser());
 
-        Cookies.remove('token')
+      
+      await persistor.purge();
 
-        if (session) {
-            await signOut({
-                callbackUrl: '/'
-            })
-        }
+     
+      Cookies.remove('token');
+
+      
+      if (session) {
+        await signOut({
+          callbackUrl: '/' 
+        });
+      }
+    } catch (error) {
+      console.error('Error durante el logout:', error);
+    } finally {
+      setLoading(false); 
+    }
 
     }
 
 
-    return <Button onClick={handleSignOut}>Sign Out</Button>
+    return (
+        <div>
+        {loading ? ( 
+            <PageLoading/>
+        ) : (
+            <Button
+            onClick={handleSignOut}
+            className="bg-one text-four border-five border-2 font-semibold md:mr-3 mr-0"
+            >
+            Sign Out
+            </Button>
+        )}
+        </div>
+    )
 }

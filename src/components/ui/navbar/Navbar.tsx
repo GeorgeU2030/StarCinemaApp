@@ -11,6 +11,10 @@ export const NavBar = () => {
 
   const user = useSelector((state: RootState) => state.user.user);
 
+  if(user){
+    console.log(user.image)
+  }
+
   return (
     <nav className="flex px-5 py-3 justify-between items-center w-full shadow-sm bg-one">
       <div className="flex items-center">
@@ -39,7 +43,7 @@ export const NavBar = () => {
         {user ? (
           // If the user is authenticated, user-related content
           <div className="flex items-center">
-              <Avatar src={user.image} className="mr-3"/>
+              <Avatar src={user.image} className="mr-3" showFallback/>
               <SignOut/>
           </div>
         ) : (
