@@ -2,9 +2,15 @@
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
 import { titleFonts } from "@/config/fonts";
-import { Image, Button } from "@nextui-org/react";
+import { Image, Button, Avatar } from "@nextui-org/react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import SignOut from "@/components/authjs/SignOut";
 
 export const NavBar = () => {
+
+  const user = useSelector((state: RootState) => state.user.user);
+
   return (
     <nav className="flex px-5 py-3 justify-between items-center w-full shadow-sm bg-one">
       <div className="flex items-center">
@@ -28,16 +34,27 @@ export const NavBar = () => {
         </div>
       </div>
 
-      {/* Login */}
       <div className="flex items-center">
-        <Button className="md:mr-3 mr-1 bg-one text-four border-five border-2 font-semibold">
-          <Link href="/register">Register</Link>
-        </Button>
-        <Button className="md:mr-3 mr-0 bg-one text-four border-five border-2 font-semibold">
-          <Link href="/login">
-            <span className={`${titleFonts.className}`}>Login</span>  
-          </Link>
-        </Button>
+        {/* if the user is authenticated */}
+        {user ? (
+          // If the user is authenticated, user-related content
+          <div className="flex items-center">
+              <Avatar src={user.image} className="mr-3"/>
+              <SignOut/>
+          </div>
+        ) : (
+          // If the user is not authenticated, login and register buttons has to be shown
+          <div className="flex items-center">
+            <Button className="md:mr-3 mr-1 bg-one text-four border-five border-2 font-semibold">
+              <Link href="/register">Register</Link>
+            </Button>
+            <Button className="md:mr-3 mr-0 bg-one text-four border-five border-2 font-semibold">
+              <Link href="/login">
+                <span className={`${titleFonts.className}`}>Login</span>  
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );
