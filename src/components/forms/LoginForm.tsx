@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 // imports for the Form
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,9 +15,13 @@ import {
 import { loginFormSchema } from '@/schemas/loginformschema'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { useLoginUserMutation } from '@/store/services/userApi'
+
+// imports for the Redux and token
+import { useLoginUserMutation, useFindByEmailQuery } from '@/store/services/userApi'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
+import { setUser, setToken } from '@/store/slices/userSlice'
 
 export default function LoginForm() {
 
@@ -32,26 +36,45 @@ export default function LoginForm() {
 
     // Redux LoginUser Mutation
     const [loginUser, { data, error }] = useLoginUserMutation()
+    const dispatch = useDispatch()
+
+    // Redux FetchUserByEmail Query
+    const [userEmail, setUserEmail] = React.useState('')
+    const { data: userData, error: userError } = useFindByEmailQuery(userEmail, { skip: userEmail === '' })
 
     // Variables
     const [errorState, setErrorState] = React.useState('')
     const router = useRouter()
 
+    // useEffect - Redirect 
+
+    useEffect(()=>{
+        if(userData){
+            dispatch(setUser({ user: userData, role: userData.role }))
+            dispatch(setToken(Cookies.get('token') || null))
+            router.push('/')
+        } else if(userError){
+            console.log(userError)
+        }
+    }, [userData, userError, dispatch, router])
 
     // OnSubmit Function - Login User
     async function onSubmit(formdata: z.infer<typeof loginFormSchema>) {
-        await loginUser(formdata).unwrap().catch((error) => {
-            if (error.status === 401) {
-                setErrorState('Invalid Credentials');
+        try {
+            const loginResponse = await loginUser(formdata).unwrap();
+            setErrorState('');
+            Cookies.set('token', loginResponse.access_token);
+            setUserEmail(formdata.email);
+        } catch (error: any) {
+            if (typeof error.status === 'number') {
+                if (error.status === 401) {
+                    setErrorState('Invalid Credentials');
+                } else {
+                    setErrorState('The user does not exist');
+                }
             } else {
-                setErrorState('The user do not Exist');
+                setErrorState('An unknown error occurred');
             }
-        });
-    
-        setErrorState('');
-        if (data) {
-            Cookies.set('token', data.access_token);
-            router.push('/')
         }
     }
 

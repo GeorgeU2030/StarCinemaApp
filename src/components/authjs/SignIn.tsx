@@ -1,14 +1,18 @@
 "use client";
 
-import { useSession, signIn, getCsrfToken } from "next-auth/react"
+
+import { useSession, signIn } from "next-auth/react"
 import { Button, Image } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useFindByEmailQuery, 
-useRegisterCustomerMutation
+useRegisterCustomerMutation,
+useLoginUserMutation
 } from "@/store/services/userApi";
 import { useEffect, useState, useRef } from "react";
 import { generatePassword } from "@/functions/generatePassword";
-
+import { useDispatch } from "react-redux";
+import { setUser, setToken } from "@/store/slices/userSlice";
+import Cookies from "js-cookie";
 
 export default function SignIn() {
   
@@ -16,8 +20,10 @@ export default function SignIn() {
     const router = useRouter()
     const findByEmailQuery = useFindByEmailQuery(session?.user?.email);
     const [registerCustomer] = useRegisterCustomerMutation();
+    const [loginUser, { data, error }] = useLoginUserMutation();
     const [isUserChecked, setIsUserChecked] = useState(false);
     const userRegistered = useRef(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (session && session.user && findByEmailQuery.data === undefined) {
@@ -30,6 +36,10 @@ export default function SignIn() {
           const user = findByEmailQuery.data;
     
           if (user) {
+            const loginresponse = await loginUser({email: user.email, password: user.password}).unwrap();
+            Cookies.set('token', loginresponse.access_token);
+            dispatch(setUser({ user: user, role: user.role }));
+            dispatch(setToken(Cookies.get('token') || null));
             router.push('/');
           } else if (!user && !userRegistered.current && !isUserChecked) {
             let firstName = '';
