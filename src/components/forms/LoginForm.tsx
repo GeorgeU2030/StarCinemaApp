@@ -50,7 +50,9 @@ export default function LoginForm() {
 
     useEffect(()=>{
         if(userData){
-            dispatch(setUser({ user: userData, role: userData.role }))
+            dispatch(setUser({ user: {
+                id: userData.id, email: userData.email, image: userData.image
+            }, role: userData.role }))
             dispatch(setToken(Cookies.get('token') || null))
             router.push('/')
         } else if(userError){

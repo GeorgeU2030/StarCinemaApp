@@ -2,7 +2,7 @@
 
 
 import { useSession, signIn } from "next-auth/react"
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useFindByEmailQuery, 
 useRegisterCustomerMutation,
@@ -16,14 +16,22 @@ import Cookies from "js-cookie";
 
 export default function SignIn() {
   
+    // session 
     const { data: session } = useSession()
+
+    // router 
     const router = useRouter()
+
+    // redux functions
     const findByEmailQuery = useFindByEmailQuery(session?.user?.email);
     const [registerCustomer] = useRegisterCustomerMutation();
     const [loginUser, { data, error }] = useLoginUserMutation();
+    const dispatch = useDispatch();
+
+    // states and ref
     const [isUserChecked, setIsUserChecked] = useState(false);
     const userRegistered = useRef(false);
-    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (session && session.user && findByEmailQuery.data === undefined) {
@@ -38,7 +46,9 @@ export default function SignIn() {
           if (user) {
             const loginresponse = await loginUser({email: user.email, password: user.password}).unwrap();
             Cookies.set('token', loginresponse.access_token);
-            dispatch(setUser({ user: user, role: user.role }));
+            dispatch(setUser({ user: {
+              id: user.id, email: user.email, image: user.image
+            }, role: user.role }));
             dispatch(setToken(Cookies.get('token') || null));
             router.push('/');
           } else if (!user && !userRegistered.current && !isUserChecked) {
@@ -74,12 +84,16 @@ export default function SignIn() {
     };
     
     if (session && session.user && findByEmailQuery.data !== undefined) {
+          setIsLoading(true);
           handleLogin();
     }
 
     }, [session, findByEmailQuery.data, isUserChecked, registerCustomer, router]);
     
 
+    if (isLoading) {
+        return <Spinner color="danger"/>
+    }
 
     return (
         <Button endContent={<Image src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png" width={20} height={20}/>} onClick={() => signIn('google')}
