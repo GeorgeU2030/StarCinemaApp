@@ -12,7 +12,7 @@ const movies = initialData.movies;
 
 export default function MoviePage({ params }: Props) {
   const { slug } = params;
-  const movie = movies.find((movie) => movie.slug === slug);
+  const movie = movies.find((movie) => movie.id === slug);
 
   if (!movie) {
     notFound();
