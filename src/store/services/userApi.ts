@@ -21,17 +21,6 @@ export const userApi = createApi({
           }),
         }),
 
-        createMovie : builder.mutation({
-          query: ({ token, movie }) => ({
-            url: 'movies/create',
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-            body: movie,
-          })
-        }),
-
         // querys
         findByEmail: builder.query({
           query: (email) => ({
@@ -39,9 +28,8 @@ export const userApi = createApi({
             method: 'GET',
           }),
         })
+
     }),
 });
 
-export const {useLoginUserMutation, useRegisterCustomerMutation, useFindByEmailQuery,
-  useCreateMovieMutation
-} = userApi;
+export const {useLoginUserMutation, useRegisterCustomerMutation, useFindByEmailQuery} = userApi;

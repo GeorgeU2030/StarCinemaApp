@@ -1,8 +1,7 @@
 "use client";
 import { MovieGrid, Title } from "@/components";
-import { initialData } from "@/seed/seed";
 import { RootState } from "@/store";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, Spinner } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { FaPlusCircle } from "react-icons/fa";
 import { MdLocalMovies } from "react-icons/md";
@@ -11,14 +10,17 @@ import { useEffect } from "react";
 import { clearUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"
-
-const movies = initialData.movies;
+import { useGetMoviesQuery } from "@/store/services/movieApi";
 
 export default function MoviesPage() {
 
   const role = useSelector((state: RootState) => state.user.role);
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
+
+  const { data: movies } = useGetMoviesQuery({})
+
+  console.log(movies)
 
   const router = useRouter()
 
@@ -55,8 +57,13 @@ export default function MoviesPage() {
           </div>
         )}
       </div>
-      <Title title="All Movies" className="mb-10 pt-2 ps-8" />
-      <MovieGrid movies={movies} />
+      <Title title="All Movies" className="mb-10 pt-2 ps-4" />
+
+      {
+        movies ? <MovieGrid movies={movies} /> : <div className="flex justify-center items-center">
+          <Spinner color="warning"/>
+        </div>
+      }
     </>
   );
 }

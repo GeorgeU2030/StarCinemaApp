@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { userApi } from "./services/userApi";
+import { movieApi } from "./services/movieApi";
 import userReducer from "./slices/userSlice";
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
-import { apiMiddleware } from "./services/middlewareRedux";
 
 const persistConfig = {
   key: "root",
@@ -17,11 +17,12 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 export const store = configureStore({
     reducer: {
       [userApi.reducerPath]: userApi.reducer,
+      [movieApi.reducerPath]: movieApi.reducer,
       user: persistedReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(userApi.middleware, apiMiddleware),
+    }).concat(userApi.middleware,movieApi.middleware),
 });
 
 setupListeners(store.dispatch);
