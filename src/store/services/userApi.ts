@@ -4,6 +4,8 @@ export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL }),
     endpoints: (builder) => ({
+
+        // mutations
         loginUser: builder.mutation({
           query: (credentials) => ({
             url: 'auth/login',
@@ -18,6 +20,19 @@ export const userApi = createApi({
             body: credentials,
           }),
         }),
+
+        createMovie : builder.mutation({
+          query: ({ token, movie }) => ({
+            url: 'movies/create',
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+            body: movie,
+          })
+        }),
+
+        // querys
         findByEmail: builder.query({
           query: (email) => ({
             url: `users/exist_email?email=${email}`,
