@@ -6,6 +6,11 @@ import { Button, Image } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { FaPlusCircle } from "react-icons/fa";
 import { MdLocalMovies } from "react-icons/md";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { clearUser } from "@/store/slices/userSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation"
 
 const movies = initialData.movies;
 
@@ -13,6 +18,15 @@ export default function MoviesPage() {
 
   const role = useSelector((state: RootState) => state.user.role);
   const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
+
+  const router = useRouter()
+
+  useEffect(()=>{
+    if(!Cookies.get("token")){
+      dispatch(clearUser())
+    }
+  },[])
 
   return (
     <>
@@ -29,6 +43,7 @@ export default function MoviesPage() {
                 > Employee</Button>
                 <Button startContent={<MdLocalMovies className="text-four" size={24}/>}
                 className="bg-one text-four font-semibold border-three border-2 mr-2 "
+                onClick={()=>router.push("/new_movie")}
                 > New Movie</Button>
               </div>
             </div>

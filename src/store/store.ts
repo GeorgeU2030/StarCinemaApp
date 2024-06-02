@@ -4,6 +4,7 @@ import { userApi } from "./services/userApi";
 import userReducer from "./slices/userSlice";
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import { apiMiddleware } from "./services/middlewareRedux";
 
 const persistConfig = {
   key: "root",
@@ -18,7 +19,9 @@ export const store = configureStore({
       [userApi.reducerPath]: userApi.reducer,
       user: persistedReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(userApi.middleware, apiMiddleware),
 });
 
 setupListeners(store.dispatch);
