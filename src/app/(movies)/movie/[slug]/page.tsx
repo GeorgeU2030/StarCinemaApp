@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { initialData } from "@/seed/seed";
-import { Title } from "@/components";
+import { FunctionPicker, MovieBanner, MovieInfo, Title } from "@/components";
 
 interface Props {
   params: {
@@ -19,8 +19,12 @@ export default function MoviePage({ params }: Props) {
   }
 
   return (
-    <>
-      <Title title={movie?.title} className="mb-2 ps-8" />
-    </>
+    <div>
+      <MovieBanner movie={movie} />
+      <div className="flex space-x-12">
+        <MovieInfo movie={movie} />
+        <FunctionPicker />
+      </div>
+    </div>
   );
 }

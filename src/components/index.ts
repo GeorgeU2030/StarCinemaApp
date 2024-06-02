@@ -1,3 +1,7 @@
+export * from "./movie/FunctionPicker";
+export * from "./movie/MovieBanner";
+export * from "./movie/MovieInfo";
+
 export * from "./movies/movies-grid/MovieGridItem";
 export * from "./movies/movies-grid/MovieGrid";
 
