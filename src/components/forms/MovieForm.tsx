@@ -71,6 +71,7 @@ export default function MovieForm() {
                 setSuccessCreation(true)
                 setImageUrl("")
                 form.reset()
+                setSuccessCreation(false)
             }
         }catch (error: any) {
             console.log(error)
@@ -116,7 +117,7 @@ export default function MovieForm() {
                     <FormItem className='w-5/6'>
                         <FormLabel className='font-semibold text-one'>Premiere Date</FormLabel>
                         <FormControl>
-                            <Input {...field} className='border-2 border-two text-end' placeholder='dd/mm/yyyy'/>
+                            <Input {...field} className='border-2 border-two text-end' placeholder='mm/dd/yyyy'/>
                         </FormControl>
                         <FormMessage className='font-semibold text-center'/>
                     </FormItem>
