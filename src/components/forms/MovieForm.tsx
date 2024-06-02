@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -15,9 +15,11 @@ import { movieFormSchema } from '@/schemas/movieformschema'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Image, Select, SelectItem } from '@nextui-org/react'
-import { useCreateMovieMutation } from '@/store/services/userApi'
-import { useSelector } from 'react-redux'
+import { useCreateMovieMutation } from '@/store/services/movieApi'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store'
+import { clearUser } from '@/store/slices/userSlice'
+import Cookies from 'js-cookie'
 
 export default function MovieForm() {
 
@@ -36,11 +38,21 @@ export default function MovieForm() {
         },
     })
 
-    const [createMovie]= useCreateMovieMutation()
+    const [createMovie, { error }]= useCreateMovieMutation()
     const token = useSelector((state: RootState) => state.user.token)
+    const dispatch = useDispatch()
 
     const [imageUrl, setImageUrl] = React.useState<string>("")
     const [successCreation, setSuccessCreation] = React.useState(false)
+
+    
+    useEffect(()=>{
+        if (error && 'status' in error && error.status === 401) {
+            dispatch(clearUser());
+            Cookies.remove("token");
+        }
+    }, [error, dispatch])
+
 
     async function onSubmit(data: z.infer<typeof movieFormSchema>) {
         const {year, premiereDate, isprox, duration, genres, ...restOfData} = data

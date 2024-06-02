@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
+import { Image } from "@nextui-org/react";
 import { Movie } from "@/interfaces";
 
 interface Props {
@@ -10,21 +10,19 @@ interface Props {
 export const MovieGridItem = ({ movie }: Props) => {
   return (
     // Card
-    <div className="rounded-md overflow-hidden fade-in w-64 border bg-gray-100 border-gray-200 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-      <Link href={`/movie/${movie.slug}`}>
+    <div className="flex flex-row md:flex-col rounded-md overflow-hidden fade-in w-full md:w-full border bg-gray-100 border-gray-200 shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
+      <Link href={`/movie/${movie.title}`}>
         <Image
-          src={`/movies/${movie.poster}`}
+          src={movie.cover}
           alt={movie.title}
-          className="w-full object-cover rounded h-96"
-          width={200}
-          height={500}
+          className="object-cover rounded md:h-96 w-28 md:w-full h-36 ml-2 md:ml-0"
         />
       </Link>
 
       <div className="p-4 flex flex-col">
         <Link
-          className="hover:text-blue-600 font-bold"
-          href={`/movie/${movie.slug}`}
+          className="hover:text-one font-bold"
+          href={`/movie/${movie.title}`}
         >
           {movie.title}
         </Link>
