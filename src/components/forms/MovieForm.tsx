@@ -71,7 +71,6 @@ export default function MovieForm() {
                 setSuccessCreation(true)
                 setImageUrl("")
                 form.reset()
-                setSuccessCreation(false)
             }
         }catch (error: any) {
             console.log(error)
@@ -82,8 +81,8 @@ export default function MovieForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-4 py-4 px-2 flex flex-col items-center'>
-            <div className='flex w-full'>
-            <div className='flex flex-col items-center w-1/2'>
+            <div className='flex flex-col md:flex-row w-full'>
+            <div className='flex flex-col items-center w-full md:w-1/2 '>
             <FormField
                 control={form.control}
                 name="title"
@@ -148,8 +147,8 @@ export default function MovieForm() {
                     <FormItem className='w-5/6'>
                         <FormControl>
                             <Select label="Is Coming" defaultSelectedKeys={["1"]} {...field} className='mt-5 text-one border-2 border-one rounded-lg ' size='sm' >
-                                <SelectItem key={1} value="Yes" >Yes</SelectItem>
-                                <SelectItem key={2} value="No" >No</SelectItem>
+                                <SelectItem key={"Yes"} value="Yes" >Yes</SelectItem>
+                                <SelectItem key={"No"} value="No" >No</SelectItem>
                             </Select>
                         </FormControl>
                         <FormMessage className='font-semibold text-center'/>
@@ -171,7 +170,7 @@ export default function MovieForm() {
             />
             </div>
 
-            <div className='flex flex-col items-center justify-center w-1/2'>
+            <div className='flex flex-col items-center justify-center w-full md:w-1/2'>
             <FormField
                 control={form.control}
                 name="cover"
@@ -224,7 +223,7 @@ export default function MovieForm() {
             </div>
 
             </div>
-            <div className="flex justify-center w-1/6">
+            <div className="flex justify-center w-1/2 md:w-1/6">
                 <Button type="submit" className={'w-full bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}
                 >Create Movie</Button>
             </div>
