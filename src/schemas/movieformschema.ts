@@ -4,22 +4,24 @@ export const movieFormSchema = z.object({
     title: z.string().min(2,{
         message: "must be at least 2 characters"
     }),
-    year: z.number().int().min(2024,{
+    year: z.string().min(4,{
         message: "must be at least 2024"
     }),
-    premiereDate: z.string().min(4,{
-        message: "must be at least 4 characters"
+    premiereDate: z.string().refine(value => /^(\d{2})\/(\d{2})\/(\d{4})$/.test(value), {
+        message: "must be in the format dd/mm/yyyy"
     }),
     rating: z.string().min(1),
-    isprox: z.boolean(),
+    isprox: z.string({
+        message: "must be a valid url"
+    }),
     cover: z.string().url({
         message: "must be a valid url"
     }),
-    duration: z.number().int().min(2,{
+    duration: z.string().min(2,{
         message: "must be at least 2 characters"
     }),
-    genres: z.array(z.string().min(2,{
+    genres: z.string().min(2,{
         message: "must be at least 2 characters"
-    })),
+    }),
     trailer: z.string()
 })

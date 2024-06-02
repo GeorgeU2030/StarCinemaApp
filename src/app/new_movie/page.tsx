@@ -6,7 +6,7 @@ import { MdLocalMovies } from 'react-icons/md'
 export default function NewMovie() {
   return (
     <div className='min-h-screen bg-one flex flex-col justify-center items-center'>
-        <div className='bg-four w-1/2 flex flex-col items-center rounded-lg '>
+        <div className='bg-four w-2/3 flex flex-col items-center rounded-lg mb-4 '>
             <h1 className='flex text-center items-center mt-2 text-xl text-one font-semibold'>New Movie <MdLocalMovies/> </h1>
             <MovieForm/>
         </div>

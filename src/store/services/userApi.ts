@@ -42,4 +42,6 @@ export const userApi = createApi({
     }),
 });
 
-export const {useLoginUserMutation, useRegisterCustomerMutation, useFindByEmailQuery} = userApi;
+export const {useLoginUserMutation, useRegisterCustomerMutation, useFindByEmailQuery,
+  useCreateMovieMutation
+} = userApi;
