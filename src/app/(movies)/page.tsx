@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"
 import { useGetMoviesQuery } from "@/store/services/movieApi";
 import PanelAdmin from "@/components/roles/PanelAdmin";
+import PanelEmployee from "@/components/roles/PanelEmployee";
 
 
 export default function MoviesPage() {
@@ -53,6 +54,9 @@ export default function MoviesPage() {
       <div className="flex bg-five rounded-lg mt-5 border-2 border-two">
             {role === "admin" && (
                 <PanelAdmin email={user?.email} role={role}/>
+            )}
+            {role == "employee" && (
+                <PanelEmployee email={user?.email} role={role}/>
             )}
             <div className="w-2/3 md:flex hidden md:items-center">
               <Image src="https://www.marketingdirecto.com/wp-content/uploads/2017/03/disney-116655.jpg" width={216} height={150} isZoomed className="ml-2"/>
