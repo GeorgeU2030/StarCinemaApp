@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -23,10 +23,20 @@ import { Select, SelectContent,
 import FirstRoom from '../rooms/FirstRoom'
 import SecondRoom from '../rooms/SecondRoom'
 import ThirdRoom from '../rooms/ThirdRoom'
+import { useCreateRoomMutation } from '@/store/services/roomApi'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '@/store'
+import { clearUser } from '@/store/slices/userSlice'
+import Cookies from 'js-cookie'
 
 export default function RoomForm() {
 
+    const [createRoom, { error }] = useCreateRoomMutation();
+    const token = useSelector((state: RootState) => state.user.token);
+    const dispatch = useDispatch();
+
     const [selectedRoom, setSelectedRoom] = React.useState<string | null>(null);
+    const [successCreation, setSuccessCreation] = React.useState<boolean>(false);
 
     const form = useForm<z.infer<typeof roomFormSchema>>({
         resolver: zodResolver(roomFormSchema),
@@ -36,8 +46,29 @@ export default function RoomForm() {
         },
     })
 
+    useEffect(()=>{
+        if (error && 'status' in error && error.status === 401) {
+            dispatch(clearUser());
+            Cookies.remove("token");
+        }
+    }, [error, dispatch])
+
+
     async function onSubmit(values: z.infer<typeof roomFormSchema>) {
-        console.log(values)
+        const room = {
+            name: values.name,
+            seats: values.seats,
+            isAvailable: true,
+        }
+        try {
+            const roomCreated = await createRoom({ token,room});
+            if(roomCreated){
+                setSuccessCreation(true);
+                form.reset();
+            }
+        }catch(error:any){
+            console.log(error)
+        }
     }
 
 
@@ -65,7 +96,7 @@ export default function RoomForm() {
                     <FormItem className='ml-0 md:ml-4'>
                         <FormLabel className='font-semibold text-one'>Number of Seats</FormLabel>
                         <FormControl>
-                        <Select onValueChange={(value: string) => setSelectedRoom(value)} >
+                        <Select onValueChange={(value: string) => {setSelectedRoom(value); field.onChange(value)}} >
                             <SelectTrigger className="w-full md:w-48 border-2 border-one">
                                 <SelectValue placeholder="Select the Number" />
                             </SelectTrigger>
@@ -95,6 +126,7 @@ export default function RoomForm() {
                 <Button type="submit" className={'w-full bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}>Create Room</Button>
             </div>
             </form>
+            {successCreation && <div className='text-green-800 text-center font-bold mb-2 mt-2'>The room has been created succesfully</div>}
         </Form>
   )
 }
