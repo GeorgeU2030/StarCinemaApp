@@ -8,12 +8,12 @@ interface FirstRoomProps {
   maxSeats?: number;
 }
 
-const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
+const ThirdRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
     const handleSelectSeat = (id: number) => {
-        const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-        const seatNumber = id % 10 === 0 ? 10 : id % 10;
+        const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+        const seatNumber = id % 7 === 0 ? 7 : id % 7;
         const seatId = `${rowLetter}-${seatNumber}`;
     
         setSelectedSeats((prevSelectedSeats) => {
@@ -27,7 +27,7 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
         });
     };       
 
-     
+
   return (
     <div className='border-2 border-one px-1 py-1 rounded-lg'>
         <div className='flex justify-end'>
@@ -55,13 +55,16 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 <div className='mt-2'>
                     <Button disabled isIconOnly className='bg-one text-white font-bold'>F</Button>
                 </div>
+                <div className='mt-2'>
+                    <Button disabled isIconOnly className='bg-one text-white font-bold'>G</Button>
+                </div>
             </div>
             <div >
                 <div className='flex flex-row flex-nowrap'>
-                {Array.from({ length: 10 }, (_, i) => {
+                {Array.from({ length: 7 }, (_, i) => {
                 const id = i + 1;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -76,10 +79,10 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 })}
                 </div>
                 <div>
-                {Array.from({ length: 10 }, (_, i) => {
-                const id = i + 11;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 8;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -94,10 +97,10 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 })}
                 </div>
                 <div>
-                {Array.from({ length: 10 }, (_, i) => {
-                const id = i + 21;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 15;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -112,10 +115,10 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 })}
                 </div>
                 <div>
-                {Array.from({ length: 10 }, (_, i) => {
-                const id = i + 31;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 22;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -130,10 +133,10 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 })}
                 </div>
                 <div>
-                {Array.from({ length: 10 }, (_, i) => {
-                const id = i + 41;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 29;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -148,10 +151,28 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 })}
                 </div>
                 <div>
-                {Array.from({ length: 10 }, (_, i) => {
-                const id = i + 51;
-                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 10));
-                const seatNumber = id % 10 === 0 ? 10 : id % 10;
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 36;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
+                const seatId = `${rowLetter}-${seatNumber}`;
+
+                return (
+                    <Seat
+                    key={id}
+                    id={id}
+                    isSelected={selectedSeats.includes(seatId)}
+                    onSelect={handleSelectSeat}
+                    view={view}
+                    />
+                );
+                })}
+                </div>
+                <div>
+                {Array.from({ length: 7 }, (_, i) => {
+                const id = i + 43;
+                const rowLetter = String.fromCharCode(64 + Math.ceil(id / 7));
+                const seatNumber = id % 7 === 0 ? 7 : id % 7;
                 const seatId = `${rowLetter}-${seatNumber}`;
 
                 return (
@@ -167,8 +188,8 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 </div>
             </div>
         </div>
-        <div className='flex justify-end'>
-            <div className='flex w-11/12'>
+        <div className='flex'>
+            <div className='flex w-1/2 ml-11'>
                 <div>
                     <Button disabled isIconOnly className='bg-one text-white font-bold'>1</Button>
                 </div>  
@@ -190,19 +211,10 @@ const FirstRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 <div className='ml-2'>
                     <Button disabled isIconOnly className='bg-one text-white font-bold'>7</Button>
                 </div>
-                <div className='ml-2'>
-                    <Button disabled isIconOnly className='bg-one text-white font-bold'>8</Button>
-                </div>
-                <div className='ml-2'>
-                    <Button disabled isIconOnly className='bg-one text-white font-bold'>9</Button>
-                </div>
-                <div className='ml-2'>
-                    <Button disabled isIconOnly className='bg-one text-white font-bold'>10</Button>
-                </div>
             </div>
         </div>
     </div>
   );
 };
 
-export default FirstRoom;
+export default ThirdRoom;

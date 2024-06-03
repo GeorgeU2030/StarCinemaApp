@@ -27,7 +27,6 @@ const SecondRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
         });
     };       
 
-    console.log(selectedSeats); 
 
   return (
     <div className='border-2 border-one px-1 py-1 rounded-lg'>
@@ -58,7 +57,7 @@ const SecondRoom: React.FC<FirstRoomProps> = ({ view, maxSeats }) => {
                 </div>
             </div>
             <div >
-                <div>
+                <div className='flex flex-row flex-nowrap'>
                 {Array.from({ length: 6 }, (_, i) => {
                 const id = i + 1;
                 const rowLetter = String.fromCharCode(64 + Math.ceil(id / 6));

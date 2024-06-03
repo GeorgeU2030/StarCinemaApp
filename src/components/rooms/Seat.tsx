@@ -9,6 +9,7 @@ interface SeatProps {
   }
   
 const Seat: React.FC<SeatProps> = ({ id, isSelected, onSelect, view }) => {
+
     return (
       <Button
           className={`m-1 p-1 ${isSelected ? 'bg-green-500' : 'bg-five border-2 border-one'} ${view ? 'cursor-default' : 'cursor-pointer'}`}

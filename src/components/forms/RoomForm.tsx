@@ -22,9 +22,11 @@ import { Select, SelectContent,
     SelectValue, } from '../ui/select'
 import FirstRoom from '../rooms/FirstRoom'
 import SecondRoom from '../rooms/SecondRoom'
+import ThirdRoom from '../rooms/ThirdRoom'
 
 export default function RoomForm() {
 
+    const [selectedRoom, setSelectedRoom] = React.useState<string | null>(null);
 
     const form = useForm<z.infer<typeof roomFormSchema>>({
         resolver: zodResolver(roomFormSchema),
@@ -42,7 +44,7 @@ export default function RoomForm() {
   return (
     <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-4 py-4 px-2 flex flex-col items-center'>
-            <div className='flex flex-row w-1/2'>
+            <div className='flex flex-col md:flex-row w-4/5 md:w-1/2'>
             <FormField
                 control={form.control}
                 name="name"
@@ -60,21 +62,19 @@ export default function RoomForm() {
                 control={form.control}
                 name="seats"
                 render={({ field }) => (
-                    <FormItem className='ml-4'>
+                    <FormItem className='ml-0 md:ml-4'>
                         <FormLabel className='font-semibold text-one'>Number of Seats</FormLabel>
                         <FormControl>
-                        <Select {...field}>
-                            <SelectTrigger className="w-48 border-2 border-one">
+                        <Select onValueChange={(value: string) => setSelectedRoom(value)} >
+                            <SelectTrigger className="w-full md:w-48 border-2 border-one">
                                 <SelectValue placeholder="Select the Number" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
                                 <SelectLabel>Seats</SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">Blueberry</SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">Pineapple</SelectItem>
+                                <SelectItem value="36" >36 Seats - Small</SelectItem>
+                                <SelectItem value="49" >49 Seats - Medium</SelectItem>
+                                <SelectItem value="60" >60 Seats - Large</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -85,9 +85,13 @@ export default function RoomForm() {
             />
             </div>
 
-            <SecondRoom view={false}/>
+            <div className='flex overflow-x-auto md:max-w-full max-w-64'>
+                {selectedRoom === '36' && <SecondRoom view={true}/>}
+                {selectedRoom === '49' && <ThirdRoom view={true}/>}
+                {selectedRoom === '60' && <FirstRoom view={true}/>}
+            </div>
 
-            <div className="flex justify-center w-1/6">
+            <div className="flex justify-center w-1/2 md:w-1/6">
                 <Button type="submit" className={'w-full bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}>Create Room</Button>
             </div>
             </form>
