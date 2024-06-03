@@ -29,9 +29,7 @@ export default function SignOut() {
 
       
       if (session) {
-        await signOut({
-          callbackUrl: '/' 
-        });
+        await signOut();
       }
     } catch (error) {
       console.error('Error durante el logout:', error);

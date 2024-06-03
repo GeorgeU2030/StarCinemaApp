@@ -16,8 +16,6 @@ const initialRoutes = ["/login", "/register"]
 
 export default function middleware(req: NextRequest){
 
-    console.log(req.nextUrl.pathname)
-
     if(initialRoutes.includes(req.nextUrl.pathname)){
         const token = req.cookies.get("token")?.value;
         if(token){

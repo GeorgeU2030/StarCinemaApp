@@ -12,6 +12,7 @@ import { clearUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"
 import { useGetMoviesQuery } from "@/store/services/movieApi";
+import PanelAdmin from "@/components/roles/PanelAdmin";
 
 
 export default function MoviesPage() {
@@ -39,50 +40,27 @@ export default function MoviesPage() {
   }
 
   useEffect(()=>{
-    verifyToken()
+    if(user){
+      console.log('verifying user')
+      verifyToken()
+    }
   },[])
 
   return (
     <>
       <div >
-        {role === "admin" && (
-          <div className="flex bg-five rounded-lg mt-5 border-2 border-two">
-            <div className="text-black py-2 ml-2 md:ml-12 mt-3 flex flex-col md:w-1/2">
-              <span className="font-bold text-one">Welcome, {user?.email}</span>
-              <span className="font-bold"><span className="text-one">Role:</span> {role.charAt(0).toUpperCase() + role.slice(1)}</span>
-              <p className="font-semibold">What would you like to do today?</p>
-              <div className="flex mt-2">
-                <Button startContent={<FaPlusCircle className="text-four" size={20}/>}
-                className="bg-one text-four font-semibold border-three border-2 mr-2 "
-                onClick={()=>router.push('/new_employee')}
-                > Employee</Button>
-
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button 
-                      variant="bordered"
-                      startContent={<LuPopcorn className="text-four" size={24}/>}
-                      className="bg-one text-four font-semibold border-three border-2 mr-2 " 
-                    >
-                      Cinema
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem key="new_movie" startContent={<MdLocalMovies className="text-one" size={24}/>} > <div className="font-semibold " onClick={()=>router.push('/new_movie')}>New Movie</div></DropdownItem>
-                    <DropdownItem key="new_room" startContent={<MdMeetingRoom className="text-one" size={24}/>}> <div className="font-semibold " onClick={()=>router.push('/new_room')}>New Room</div></DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-
-                
-              </div>
-            </div>
+      {role && user && (
+      <div className="flex bg-five rounded-lg mt-5 border-2 border-two">
+            {role === "admin" && (
+                <PanelAdmin email={user?.email} role={role}/>
+            )}
             <div className="w-2/3 md:flex hidden md:items-center">
               <Image src="https://www.marketingdirecto.com/wp-content/uploads/2017/03/disney-116655.jpg" width={216} height={150} isZoomed className="ml-2"/>
               <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d8e7466e-ff39-4e71-8a49-cc9008218cc5/dgq7ajr-d40138b7-2868-49b1-a834-771af3dcc1f4.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Q4ZTc0NjZlLWZmMzktNGU3MS04YTQ5LWNjOTAwODIxOGNjNVwvZGdxN2Fqci1kNDAxMzhiNy0yODY4LTQ5YjEtYTgzNC03NzFhZjNkY2MxZjQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.rRC5peZajV812Nfgi7UKeB61Dd1nBR4bDhBsKx-ZNCM" width={220} isZoomed className="ml-2 h-32"/>
               <Image src="https://i.ytimg.com/vi/bNJW113tbKk/maxresdefault.jpg" width={220} isZoomed className="ml-2 h-32" />
             </div>
-          </div>
-        )}
+      </div>
+      )}
       </div>
       <Title title="All Movies" className="mb-10 pt-2 ps-4" />
 
