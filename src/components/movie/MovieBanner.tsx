@@ -11,7 +11,7 @@ export const MovieBanner = ({ movie }: Props) => {
       <div className="flex justify-center w-full bg-slate-100 mt-2 md:h-96 rounded-xl shadow-lg">
         <div className="h-2/3 ms-14 shadow-lg">
           <Image
-            src={`/movies/${movie.poster}`}
+            src={`/movies/${movie.cover}`}
             alt={movie.title}
             width={520}
             height={500}
