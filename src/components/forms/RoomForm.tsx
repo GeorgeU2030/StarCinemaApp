@@ -65,6 +65,7 @@ export default function RoomForm() {
             if(roomCreated){
                 setSuccessCreation(true);
                 form.reset();
+                setTimeout(()=>setSuccessCreation(false), 3000)
             }
         }catch(error:any){
             console.log(error)

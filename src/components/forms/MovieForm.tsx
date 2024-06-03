@@ -86,6 +86,7 @@ export default function MovieForm() {
                 setSuccessCreation(true)
                 setImageUrl("")
                 form.reset()
+                setTimeout(()=>setSuccessCreation(false), 3000)
             }
         }catch (error: any) {
             console.log(error)
