@@ -21,6 +21,7 @@ import { Select, SelectContent,
     SelectTrigger,
     SelectValue, } from '../ui/select'
 import FirstRoom from '../rooms/FirstRoom'
+import SecondRoom from '../rooms/SecondRoom'
 
 export default function RoomForm() {
 
@@ -84,7 +85,7 @@ export default function RoomForm() {
             />
             </div>
 
-            <FirstRoom view={true} maxSeats={0}/>
+            <SecondRoom view={false}/>
 
             <div className="flex justify-center w-1/6">
                 <Button type="submit" className={'w-full bg-one text-four font-semibold hover:bg-five hover:text-one hover:border-one hover:border-2'}>Create Room</Button>
