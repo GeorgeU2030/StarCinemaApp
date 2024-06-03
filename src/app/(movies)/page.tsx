@@ -68,7 +68,7 @@ export default function MoviesPage() {
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
                     <DropdownItem key="new_movie" startContent={<MdLocalMovies className="text-one" size={24}/>} > <div className="font-semibold " onClick={()=>router.push('/new_movie')}>New Movie</div></DropdownItem>
-                    <DropdownItem key="new_room" startContent={<MdMeetingRoom className="text-one" size={24}/>}> <div className="font-semibold ">New Room</div></DropdownItem>
+                    <DropdownItem key="new_room" startContent={<MdMeetingRoom className="text-one" size={24}/>}> <div className="font-semibold " onClick={()=>router.push('/new_room')}>New Room</div></DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
 
