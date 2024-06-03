@@ -1,17 +1,18 @@
 "use client";
 import { MovieGrid, Title } from "@/components";
 import { RootState } from "@/store";
-import { Button, Image, Spinner } from "@nextui-org/react";
+import { Button, Image, Spinner, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { useSelector } from "react-redux";
 import { FaPlusCircle } from "react-icons/fa";
-import { MdLocalMovies } from "react-icons/md";
+import { MdLocalMovies, MdMeetingRoom } from "react-icons/md";
+import { LuPopcorn } from "react-icons/lu";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { clearUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"
 import { useGetMoviesQuery } from "@/store/services/movieApi";
-import { Cookie } from "next/font/google";
+
 
 export default function MoviesPage() {
 
@@ -51,13 +52,27 @@ export default function MoviesPage() {
               <span className="font-bold"><span className="text-one">Role:</span> {role.charAt(0).toUpperCase() + role.slice(1)}</span>
               <p className="font-semibold">What would you like to do today?</p>
               <div className="flex mt-2">
-                <Button startContent={<FaPlusCircle className="text-four" size={24}/>}
+                <Button startContent={<FaPlusCircle className="text-four" size={20}/>}
                 className="bg-one text-four font-semibold border-three border-2 mr-2 "
                 > Employee</Button>
-                <Button startContent={<MdLocalMovies className="text-four" size={24}/>}
-                className="bg-one text-four font-semibold border-three border-2 mr-2 "
-                onClick={()=>router.push("/new_movie")}
-                > New Movie</Button>
+
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button 
+                      variant="bordered"
+                      startContent={<LuPopcorn className="text-four" size={24}/>}
+                      className="bg-one text-four font-semibold border-three border-2 mr-2 " 
+                    >
+                      Cinema
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem key="new_movie" startContent={<MdLocalMovies className="text-one" size={24}/>} > <div className="font-semibold " onClick={()=>router.push('/new_movie')}>New Movie</div></DropdownItem>
+                    <DropdownItem key="new_room" startContent={<MdMeetingRoom className="text-one" size={24}/>}> <div className="font-semibold ">New Room</div></DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+
+                
               </div>
             </div>
             <div className="w-2/3 md:flex hidden md:items-center">
