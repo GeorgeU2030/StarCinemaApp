@@ -3,6 +3,7 @@ export interface Movie {
   title: string;
   year: number;
   premiereDate: string;
+  isprox: boolean;
   genres: string[];
   rating: string;
   cover: string;

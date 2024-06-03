@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { Movie } from "@/interfaces";
+import { Image } from "@nextui-org/react";
 
 interface Props {
   movie: Movie;
@@ -8,33 +8,16 @@ interface Props {
 export const MovieBanner = ({ movie }: Props) => {
   return (
     <div>
-      <div className="flex justify-center w-full bg-slate-100 mt-2 md:h-96 rounded-xl shadow-lg">
-        <div className="h-2/3 ms-14 shadow-lg">
+      <div className="flex md:justify-center w-full mt-2 md:h-96 rounded-xl shadow-lg">
+        <div className="h-2/3">
           <Image
-            src={`/movies/${movie.cover}`}
+            src={movie.cover}
             alt={movie.title}
-            width={520}
-            height={500}
-            objectFit="cover"
-            className="rounded-lg shadow-lg"
+            className="rounded-lg shadow-lg h-48 md:h-96 w-32 md:w-72 border-2 border-red-600 ml-2 md:ml-0"
           />
         </div>
-
-        <div className="w-full pe-36 ps-10">
-          {/* <Trailer/> */}
-          <div className="bg-black w-full h-full"></div>
-        </div>
       </div>
-
-      <div className="flex justify-center ms-20">
-        <div className="w-1/2 p-10">
-          <div className="flex justify-between">
-            <div>
-              <h1 className="text-4xl font-bold">{movie.title}</h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };

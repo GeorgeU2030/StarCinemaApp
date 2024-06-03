@@ -7,9 +7,11 @@ export default function MoviesLayout({
 }>) {
   return (
     <main className="min-h-screen">
-      <NavBar />
+        <NavBar />
       <div className="px-0 sm:px-5">{children}</div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </main>
   );
 }
