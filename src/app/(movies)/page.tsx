@@ -54,6 +54,7 @@ export default function MoviesPage() {
               <div className="flex mt-2">
                 <Button startContent={<FaPlusCircle className="text-four" size={20}/>}
                 className="bg-one text-four font-semibold border-three border-2 mr-2 "
+                onClick={()=>router.push('/new_employee')}
                 > Employee</Button>
 
                 <Dropdown>

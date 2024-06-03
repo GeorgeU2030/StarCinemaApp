@@ -8,7 +8,7 @@ interface MyToken extends JwtPayload {
 }
 
 
-const adminRoutes = ["/new_movie", "/new_room"]
+const adminRoutes = ["/new_movie", "/new_room", "/new_employee"]
 
 const initialRoutes = ["/login", "/register"]
 
