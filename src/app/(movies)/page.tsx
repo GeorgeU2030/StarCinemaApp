@@ -11,6 +11,7 @@ import { clearUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation"
 import { useGetMoviesQuery } from "@/store/services/movieApi";
+import { Cookie } from "next/font/google";
 
 export default function MoviesPage() {
 
@@ -20,14 +21,24 @@ export default function MoviesPage() {
 
   const { data: movies } = useGetMoviesQuery({})
 
-  console.log(movies)
-
   const router = useRouter()
 
+  async function verifyToken(){
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/verify_token`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("token")}`
+        }
+      })
+      if (response.status === 401){
+        Cookies.remove("token")
+        dispatch(clearUser())
+      }
+  }
+
   useEffect(()=>{
-    if(!Cookies.get("token")){
-      dispatch(clearUser())
-    }
+    verifyToken()
   },[])
 
   return (
