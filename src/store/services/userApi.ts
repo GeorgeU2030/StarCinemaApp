@@ -21,10 +21,13 @@ export const userApi = createApi({
             }),
         }),
         registerEmployee: builder.mutation({
-            query: (credentials) => ({
+            query: ({token, credentials}) => ({
                 url: 'auth/register_employee',
                 method: 'POST',
                 body: credentials,
+                headers : {
+                    'Authorization': `Bearer ${token}`
+                }
             }),
         }),
 

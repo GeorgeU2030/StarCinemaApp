@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 // imports for the Form
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,12 +12,16 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { employeeFormSchema } from '@/schemas/employeeFormSchema'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useRegisterEmployeeMutation } from '@/store/services/userApi'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { employeeFormSchema } from '@/schemas/employeeformschema'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '@/store'
+import { clearUser } from '@/store/slices/userSlice'
+import Cookies from 'js-cookie'
 
 export default function RegisterEmployeeForm() {
 
@@ -33,16 +37,28 @@ export default function RegisterEmployeeForm() {
         },
     }) 
 
+    const token = useSelector((state: RootState) => state.user.token)
+    const [registerEmployee, { error }] = useRegisterEmployeeMutation()
+    const dispatch = useDispatch()
+
+
     const router = useRouter()
-
-    const [registerEmployee, { data, error }] = useRegisterEmployeeMutation()
-
     const [successfully, setSuccessfully] = useState('')
     const [errorMap, setErrorMap] = useState('')
 
+
+    useEffect(()=>{
+        if (error && 'status' in error && error.status === 401) {
+            dispatch(clearUser());
+            Cookies.remove("token");
+            router.push('/')
+        }
+    }, [error, dispatch])
+
+
     async function onSubmit(data: z.infer<typeof employeeFormSchema>) {
         let errorOccurred = false
-        await registerEmployee(data).unwrap().catch((error) => {
+        await registerEmployee({token, credentials:data}).unwrap().catch((error) => {
             setErrorMap('The Employee exists')
             errorOccurred = true
         });
@@ -50,7 +66,8 @@ export default function RegisterEmployeeForm() {
         if (!errorOccurred && data) {
             setErrorMap('')
             setSuccessfully('Employee registered successfully')
-            router.push('/employee-dashboard')
+            setTimeout(()=>setSuccessfully(''), 4000)
+            form.reset()
         }
 
     }

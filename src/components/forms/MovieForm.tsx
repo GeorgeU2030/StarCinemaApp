@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store'
 import { clearUser } from '@/store/slices/userSlice'
 import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
 
 export default function MovieForm() {
 
@@ -44,12 +45,14 @@ export default function MovieForm() {
 
     const [imageUrl, setImageUrl] = React.useState<string>("")
     const [successCreation, setSuccessCreation] = React.useState(false)
+    const router = useRouter()
 
     
     useEffect(()=>{
         if (error && 'status' in error && error.status === 401) {
             dispatch(clearUser());
             Cookies.remove("token");
+            router.push('/')
         }
     }, [error, dispatch])
 
