@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { get } from "http";
 
 export const roomApi = createApi({
     reducerPath: "roomApi",
@@ -18,6 +19,17 @@ export const roomApi = createApi({
             })
         }),
 
+        createFunction : builder.mutation({
+            query: ({ token, func }) => ({
+                url: 'functions/create',
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: func,
+            })
+        }),
+
         // queries
 
         getAvailableRooms: builder.query({
@@ -28,7 +40,8 @@ export const roomApi = createApi({
                 },
             })
         }),
+   
     })
 });
 
-export const { useCreateRoomMutation, useGetAvailableRoomsQuery} = roomApi;
+export const { useCreateRoomMutation, useCreateFunctionMutation, useGetAvailableRoomsQuery} = roomApi;

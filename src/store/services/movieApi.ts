@@ -44,6 +44,16 @@ export const movieApi = createApi({
                     'Authorization': `Bearer ${token}`
                 }
             })
+        }),
+
+        getMovieFunctions : builder.query({
+            query: ({token}) => ({
+                url: `movies/getmovies/functions/atr`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
         })
 
     }),

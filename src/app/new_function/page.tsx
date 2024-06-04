@@ -10,7 +10,7 @@ import { Movie } from '@/interfaces';
 import Cookies from 'js-cookie';
 import { clearUser } from '@/store/slices/userSlice';
 import { useRouter } from 'next/navigation';
-import { useGetAvailableRoomsQuery } from '@/store/services/roomApi';
+import { useGetAvailableRoomsQuery, useCreateFunctionMutation } from '@/store/services/roomApi';
 import { Room } from '@/interfaces/Room';
 import { MdMeetingRoom } from 'react-icons/md';
 
@@ -19,7 +19,9 @@ export default function NewFunction() {
 
 
     const today = new Date();
-    const dateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateString = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
 
     const [inputValue, setInputValue] = React.useState('')
     const [execute, setExecute] = React.useState(false)
@@ -30,10 +32,12 @@ export default function NewFunction() {
     const [dateTime, setDateTime] = React.useState('')
     const [rooms, setRooms] = React.useState<Room[]>([])
     const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null)
+    const [succesfull, setSuccesfull] = React.useState('')
 
     const router = useRouter()
 
     const token = useSelector((state: RootState) => state.user.token)
+    const [createFunction] = useCreateFunctionMutation()
     const { data, error,  } = useGetMovieNowQuery({title: inputValue, token}, {skip: !execute})
     const dispatch = useDispatch()
 
@@ -61,7 +65,43 @@ export default function NewFunction() {
       }
     }, [error, dispatch, roomsData])
 
-    console.log(rooms)
+    async function handleCreateFunction(){
+
+        let minutes = 0 
+        if (selectedMovie?.duration){
+            minutes = selectedMovie.duration
+        }
+        const [hour, minute] = time.split(':').map(Number)
+        const datenew = new Date(date)
+        datenew.setHours(hour,minute)
+
+        datenew.setMinutes(datenew.getMinutes() + minutes)
+
+        const endTime = `${datenew.getHours().toString().padStart(2, '0')}:${datenew.getMinutes().toString().padStart(2, '0')}`;
+
+        const datefinish = new Date();
+        const dateTimeString = `${datefinish.toISOString().split('T')[0]}T${endTime}:00`;
+        
+        const endTimeDate = new Date(dateTimeString);
+        const startTimeDate = new Date(dateTime);
+
+
+        const func = {
+            startTime: startTimeDate.toISOString(),
+            endTime: endTimeDate.toISOString(),
+            movieId: selectedMovie?.id,
+            roomId: selectedRoom?.id,
+        }
+
+        const functioncreated = await createFunction({token, func}).unwrap()
+
+        if (functioncreated) {
+            setSuccesfull('Function created succesfully')
+            setTimeout(()=> setSuccesfull(''), 4000)
+            router.push('/')
+        }
+
+    }
 
   return (
     <div className='min-h-screen flex flex-col bg-gradient-to-r from-one to-orange-400'>
@@ -157,8 +197,8 @@ export default function NewFunction() {
               <h1 className='text-center text-xl text-white font-semibold mb-3'>Your Function is:</h1>
               <div className='flex'>
                     {selectedMovie ? (
-                        <div className='flex flex-row items-center bg-five rounded-lg border-2 border-two px-3 '>
-                            <Image src={selectedMovie.cover} alt={selectedMovie.title} className='h-56 w-40'/>
+                        <div className='flex flex-row items-center py-1 bg-five rounded-lg border-2 border-two px-3 '>
+                            <Image src={selectedMovie.cover} alt={selectedMovie.title} className='h-56 w-40 border-2 border-two'/>
                             <div className='flex flex-col'>
                             <p className='font-semibold ml-2'>{selectedMovie.title}</p>
                             <p className='font-semibold ml-2'>{date}</p>
@@ -166,7 +206,12 @@ export default function NewFunction() {
                             {selectedRoom ? (
                                 <div className='flex flex-col'>
                                   <p className='font-semibold ml-2'>{selectedRoom.name}</p>
-                                  <Button className='bg-one mt-5 ml-2 text-white w-1/3 font-semibold'>Create</Button>
+                                  <Button className='bg-one mt-5 ml-2 text-white w-1/3 font-semibold'
+                                  onClick={handleCreateFunction}
+                                  >Create</Button>
+                                  {succesfull != "" && (
+                                      <p className='ml-2 font-semibold text-green-700'>{succesfull}</p>
+                                  )}
                                 </div>
                             ) : (
                                 <p className='font-semibold ml-2'>No room selected</p>
