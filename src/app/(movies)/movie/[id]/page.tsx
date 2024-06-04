@@ -46,7 +46,7 @@ export default function MoviePage() {
         </div>
         <div className="w-full md:w-1/2 flex flex-col items-center">
             <Trailer idyoutube={movie.trailer}/>
-            <FunctionPicker/>
+            <FunctionPicker id={movie.id}/>
         </div>
       </div>
       </>

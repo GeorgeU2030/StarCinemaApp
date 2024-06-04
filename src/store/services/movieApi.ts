@@ -54,12 +54,22 @@ export const movieApi = createApi({
                     'Authorization': `Bearer ${token}`
                 }
             })
+        }),
+
+        getMovieIdFunctions : builder.query({
+            query: ({date, id, token}) => ({
+                url: `movies/getmovies/functions/${date}/${id}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
         })
 
     }),
 });
 
 export const { useCreateMovieMutation, useGetMoviesQuery, useGetMovieByIdQuery,
-    useGetMovieNowQuery, useGetMovieFunctionsQuery
+    useGetMovieNowQuery, useGetMovieFunctionsQuery, useGetMovieIdFunctionsQuery
 }
  = movieApi;

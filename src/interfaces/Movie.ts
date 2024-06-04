@@ -12,7 +12,7 @@ export interface Movie {
   functions? : Function[]; 
 }
 
-interface Function {
+export interface Function {
   id:number;
   startTime: string;
 }
