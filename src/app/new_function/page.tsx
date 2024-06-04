@@ -10,6 +10,9 @@ import { Movie } from '@/interfaces';
 import Cookies from 'js-cookie';
 import { clearUser } from '@/store/slices/userSlice';
 import { useRouter } from 'next/navigation';
+import { useGetAvailableRoomsQuery } from '@/store/services/roomApi';
+import { Room } from '@/interfaces/Room';
+import { MdMeetingRoom } from 'react-icons/md';
 
 
 export default function NewFunction() {
@@ -20,9 +23,14 @@ export default function NewFunction() {
 
     const [inputValue, setInputValue] = React.useState('')
     const [execute, setExecute] = React.useState(false)
+    const [executeRooms, setExecuteRooms] = React.useState(false)
     const [selectedMovie, setSelectedMovie] = React.useState<Movie | null>(null)
     const [date, setDate] = React.useState(dateString)
     const [time, setTime] = React.useState('14:00')
+    const [dateTime, setDateTime] = React.useState('')
+    const [rooms, setRooms] = React.useState<Room[]>([])
+    const [selectedRoom, setSelectedRoom] = React.useState<Room | null>(null)
+
     const router = useRouter()
 
     const token = useSelector((state: RootState) => state.user.token)
@@ -33,23 +41,30 @@ export default function NewFunction() {
         setExecute(true)
     }
 
+    async function searchDate(date: string, time: string) {
+        const dateTimeString = `${date}T${time}:00`;
+        setDateTime(dateTimeString)
+        setExecuteRooms(true)
+    }
+
+    const { data: roomsData, error: roomsError } = useGetAvailableRoomsQuery({token, datestring: dateTime}, {skip: !executeRooms})
+
     useEffect(()=>{
       if (error && 'status' in error && error.status === 401) {
           dispatch(clearUser());
           Cookies.remove("token");
           router.push('/')
       }
-    }, [error, dispatch])
+      if(roomsData) {
+          setRooms(roomsData)
+          setExecuteRooms(false)
+      }
+    }, [error, dispatch, roomsData])
 
-    async function searchDate(date: string, time: string) {
-        const dateTimeString = `${date}T${time}:00`;
-        console.log(dateTimeString)
-        
-    }
-
+    console.log(rooms)
 
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className='min-h-screen flex flex-col bg-gradient-to-r from-one to-orange-400'>
       <div className='flex md:flex-row flex-col h-[50vh]'>
           <div className='flex flex-col items-center justify-center w-full md:w-1/2 h-full'>
               <div className='bg-gradient-to-r from-one to-four px-3 py-1 rounded-lg border-2 border-four'>
@@ -72,7 +87,9 @@ export default function NewFunction() {
                   <tbody>
                     {data ? (
                       <tr className='text-center h-24' onClick={()=> setSelectedMovie(data)}>
-                          <td className='font-semibold'>{data.title}</td>
+                          <td className='font-semibold'>
+                             {data.title}
+                          </td>
                       </tr>
                     ) : (
                       <tr className='text-center font-semibold h-24'>
@@ -103,16 +120,58 @@ export default function NewFunction() {
           </div>
       </div>
       <div className='flex md:flex-row flex-col h-[50vh]'>
-          <div className='bg-yellow-600 flex flex-col w-full md:w-1/2 h-full'>
-            como vas
+          <div className='flex flex-col items-center justify-center w-full md:w-1/2 h-full'>
+                <div className='bg-five md:w-72 px-6 py-3 rounded-lg border-2 border-two'>
+                    <h1 className='text-center text-two font-semibold'>Rooms Available</h1>
+                    <div className='max-h-48 overflow-y-auto '>
+                    <table className='w-full mt-5 rounded-lg border-2 border-two bg-five'>
+                        <thead>
+                            <tr className='text-center'>
+                                <th className='font-semibold text-one'>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {rooms.length > 0 ? (
+                            rooms.map(room => (
+                                <tr key={room.id} className='flex justify-center cursor-pointer hover:bg-five h-10 bg-four border-2 border-three' 
+                                onClick={()=> setSelectedRoom(room)}
+                                >
+                                    <td className='font-semibold flex items-center'>
+                                    <MdMeetingRoom size={20} className='text-one'/>  {room.name}
+                                    </td>
+                                </tr>
+                            ))
+                          ) : (
+                           
+                              <tr className='text-center h-8'>
+                                <td className='font-semibold '>Choose a Date</td>
+                              </tr>
+                           
+                          )}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
           </div>
           <div className='flex flex-col items-center justify-center w-full md:w-1/2 h-full'>
-              <h1 className='text-center text-one font-semibold mb-3'>Your Function is:</h1>
+              <h1 className='text-center text-xl text-white font-semibold mb-3'>Your Function is:</h1>
               <div className='flex'>
                     {selectedMovie ? (
                         <div className='flex flex-row items-center bg-five rounded-lg border-2 border-two px-3 '>
-                            <Image src={selectedMovie.cover} alt={selectedMovie.title} className='h-40 w-28'/>
+                            <Image src={selectedMovie.cover} alt={selectedMovie.title} className='h-56 w-40'/>
+                            <div className='flex flex-col'>
                             <p className='font-semibold ml-2'>{selectedMovie.title}</p>
+                            <p className='font-semibold ml-2'>{date}</p>
+                            <p className='font-semibold ml-2'>{time}</p>
+                            {selectedRoom ? (
+                                <div className='flex flex-col'>
+                                  <p className='font-semibold ml-2'>{selectedRoom.name}</p>
+                                  <Button className='bg-one mt-5 ml-2 text-white w-1/3 font-semibold'>Create</Button>
+                                </div>
+                            ) : (
+                                <p className='font-semibold ml-2'>No room selected</p>
+                            )}
+                            </div>
                         </div>
                     ): (
                       <div className='flex justify-center items-center h-24 mt-4 bg-five rounded border-2 border-two px-3'>
