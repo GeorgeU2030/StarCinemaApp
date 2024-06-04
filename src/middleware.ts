@@ -10,6 +10,8 @@ interface MyToken extends JwtPayload {
 
 const adminRoutes = ["/new_movie", "/new_room", "/new_employee"]
 
+const employeeRoutes = ["/new_function", "/functions"]
+
 const movieRouteRegex = /^\/movie\/\d+$/;
 
 const initialRoutes = ["/login", "/register"]
@@ -43,6 +45,22 @@ export default function middleware(req: NextRequest){
         const decoded = jwtDecode<MyToken>(token)
 
         if(decoded.roles !== "admin"){
+            const absoluteURL = new URL("/error", req.nextUrl.origin);
+            return NextResponse.redirect(absoluteURL.toString());
+        }
+    }
+
+    if(employeeRoutes.includes(req.nextUrl.pathname)){
+        
+        const token = req.cookies.get("token")?.value;
+        if(!token){
+            const absoluteURL = new URL("/login", req.nextUrl.origin);
+            return NextResponse.redirect(absoluteURL.toString());
+        }
+
+        const decoded = jwtDecode<MyToken>(token)
+
+        if(decoded.roles !== "employee"){
             const absoluteURL = new URL("/error", req.nextUrl.origin);
             return NextResponse.redirect(absoluteURL.toString());
         }
