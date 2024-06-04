@@ -97,7 +97,7 @@ export default function NewFunction() {
 
         if (functioncreated) {
             setSuccesfull('Function created succesfully')
-            setTimeout(()=> setSuccesfull(''), 4000)
+            setTimeout(()=> setSuccesfull(''), 6000)
             router.push('/')
         }
 

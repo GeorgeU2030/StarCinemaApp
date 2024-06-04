@@ -9,4 +9,10 @@ export interface Movie {
   cover: string;
   duration: number;
   trailer: string;
+  functions? : Function[]; 
+}
+
+interface Function {
+  id:number;
+  startTime: string;
 }

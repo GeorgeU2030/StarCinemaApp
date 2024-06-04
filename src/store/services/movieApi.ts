@@ -60,6 +60,6 @@ export const movieApi = createApi({
 });
 
 export const { useCreateMovieMutation, useGetMoviesQuery, useGetMovieByIdQuery,
-    useGetMovieNowQuery
+    useGetMovieNowQuery, useGetMovieFunctionsQuery
 }
  = movieApi;
