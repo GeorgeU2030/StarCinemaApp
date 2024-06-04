@@ -6,6 +6,7 @@ import { useGetMovieIdFunctionsQuery } from "@/store/services/movieApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Function } from "@/interfaces";
+import { useRouter } from "next/navigation"
 
 interface FunctionPickerProps {
   id: number
@@ -15,15 +16,14 @@ export const FunctionPicker = ({id}:FunctionPickerProps) => {
 
   const currentDate = today(getLocalTimeZone());
 
+  const router = useRouter();
+
   const [selectedDate, setSelectedDate] = useState<string>(currentDate.toString());
 
   const token = useSelector((state: RootState) => state.user.token);
 
   const { data: functions } = useGetMovieIdFunctionsQuery({ date: selectedDate, id, token });
 
-  if (functions){
-    console.log(functions)
-  }
 
   return (
     <div className="flex flex-col items-center space-y-7 w-4/5 md:w-2/3 h-fit mt-12 p-5 bg-two rounded-lg shadow-lg">
@@ -59,14 +59,17 @@ export const FunctionPicker = ({id}:FunctionPickerProps) => {
                 const amOrPm = hours < 12 ? 'AM' : 'PM';
 
                 return (
-                  <div key={f.id} className="flex flex-row items-center bg-four ml-2 px-2 py-2 rounded-lg text-one cursor-pointer">
+                  <div key={f.id} className="flex flex-row items-center bg-four ml-2 px-2 py-2 rounded-lg text-one cursor-pointer"
+                  onClick={() => router.push(`/buy/${f.id}`)}
+                  >
                     <span className="font-semibold">{`${formattedHours}:${formattedMinutes} ${amOrPm}`}</span>
                   </div>
                 );
               })
             ))
           ) : (
-            <div className="flex flex-row items-center bg-four ml-2 px-2 py-2 rounded-lg text-one cursor-pointer">
+            <div className="flex flex-row items-center bg-four ml-2 px-2 py-2 rounded-lg text-one cursor-pointer"
+            >
               <span className="font-semibold">No functions available</span>
             </div>
           )}

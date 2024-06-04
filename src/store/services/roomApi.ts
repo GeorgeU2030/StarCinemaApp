@@ -41,7 +41,17 @@ export const roomApi = createApi({
             })
         }),
    
+        getFunctionId : builder.query({
+            query: ({ token, id }) => ({
+                url: `functions/${id}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+        })
     })
 });
 
-export const { useCreateRoomMutation, useCreateFunctionMutation, useGetAvailableRoomsQuery} = roomApi;
+export const { useCreateRoomMutation, useCreateFunctionMutation, useGetAvailableRoomsQuery, 
+    useGetFunctionIdQuery
+} = roomApi;
