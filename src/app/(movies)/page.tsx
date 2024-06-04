@@ -58,14 +58,31 @@ export default function MoviesPage() {
             {role == "employee" && (
                 <PanelEmployee email={user?.email} role={role}/>
             )}
+            {role == "employee" || role == "admin" && (
             <div className="w-2/3 md:flex hidden md:items-center">
               <Image src="https://www.marketingdirecto.com/wp-content/uploads/2017/03/disney-116655.jpg" width={216} height={150} isZoomed className="ml-2"/>
               <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d8e7466e-ff39-4e71-8a49-cc9008218cc5/dgq7ajr-d40138b7-2868-49b1-a834-771af3dcc1f4.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Q4ZTc0NjZlLWZmMzktNGU3MS04YTQ5LWNjOTAwODIxOGNjNVwvZGdxN2Fqci1kNDAxMzhiNy0yODY4LTQ5YjEtYTgzNC03NzFhZjNkY2MxZjQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.rRC5peZajV812Nfgi7UKeB61Dd1nBR4bDhBsKx-ZNCM" width={220} isZoomed className="ml-2 h-32"/>
               <Image src="https://i.ytimg.com/vi/bNJW113tbKk/maxresdefault.jpg" width={220} isZoomed className="ml-2 h-32" />
             </div>
+            )}
       </div>
       )}
       </div>
+      {
+        role && role == "customer" && (
+          <div className="bg-gradient-to-r from-two to-four flex md:flex-row flex-col justify-center items-center h-[20vh]">
+            <div className="bg-gradient-to-r from-yellow-400 to-five flex items-center justify-center w-5/6 md:w-1/4 h-full rounded-lg shadow-lg border-2 border-three">
+                <h1 className="font-semibold text-one md:text-lg">NOW IN THEATERS</h1>
+            </div>
+            <div className="bg-gradient-to-r from-yellow-400 to-five flex items-center justify-center w-5/6 mt-2 md:mt-0 md:w-1/4 md:ml-4 h-full rounded-lg shadow-lg border-2 border-three">
+              <h1 className="font-semibold text-one md:text-lg">COOMING SOON</h1>
+            </div>
+            <div className="bg-gradient-to-r from-yellow-400 to-five flex items-center justify-center w-5/6 mt-2 md:mt-0 md:w-1/4 md:ml-4 h-full rounded-lg shadow-lg border-2 border-three">
+              <h1 className="font-semibold text-one md:text-lg">POPCORN AND FOOD</h1>
+            </div>
+          </div>
+        )
+      }
       <Title title="All Movies" className="mb-10 pt-2 ps-4" />
 
       {
