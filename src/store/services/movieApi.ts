@@ -34,10 +34,22 @@ export const movieApi = createApi({
                     'Authorization': `Bearer ${token}`,
                 }
             })
+        }),
+
+        getMovieNow : builder.query({
+            query: ({title, token}) => ({
+                url: `movies/movienow/${title}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
         })
 
     }),
 });
 
-export const { useCreateMovieMutation, useGetMoviesQuery, useGetMovieByIdQuery}
+export const { useCreateMovieMutation, useGetMoviesQuery, useGetMovieByIdQuery,
+    useGetMovieNowQuery
+}
  = movieApi;
