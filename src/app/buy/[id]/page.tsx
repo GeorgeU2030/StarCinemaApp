@@ -9,7 +9,7 @@ import ThirdRoom from '@/components/rooms/ThirdRoom'
 import FirstRoom from '@/components/rooms/FirstRoom'
 import { Button } from '@nextui-org/react'
 
-export default function () {
+export default function Buy () {
 
   const { id } = useParams()
   const token = useSelector((state: RootState) => state.user.token)
